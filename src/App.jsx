@@ -150,6 +150,30 @@ function SymbolIcon({ code, label }) {
   return <span aria-hidden="true" title={label}>{String.fromCodePoint(...codes)}</span>;
 }
 
+/* Minimal line icons for the theme toggle, matching the site's outline-icon style */
+function IconSun({ size = 16 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="4" />
+      <line x1="12" y1="2" x2="12" y2="4.5" />
+      <line x1="12" y1="19.5" x2="12" y2="22" />
+      <line x1="4.5" y1="4.5" x2="6.2" y2="6.2" />
+      <line x1="17.8" y1="17.8" x2="19.5" y2="19.5" />
+      <line x1="2" y1="12" x2="4.5" y2="12" />
+      <line x1="19.5" y1="12" x2="22" y2="12" />
+      <line x1="4.5" y1="19.5" x2="6.2" y2="17.8" />
+      <line x1="17.8" y1="6.2" x2="19.5" y2="4.5" />
+    </svg>
+  );
+}
+function IconMoon({ size = 16 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+    </svg>
+  );
+}
+
 /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    ORB LAYOUT â€” scattered positions matching Antigravity style
 â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
@@ -212,6 +236,34 @@ const CSS = `
   --accent-2: #a78bfa;
   --accent-dim: rgba(94,234,212,0.12);
   --on-accent: #06110f;
+  --accent-rgb: 94,234,212;
+  --accent-2-rgb: 167,139,250;
+  --bg-rgb: 10,14,22;
+  --grid-line: rgba(255,255,255,0.035);
+  --contact-bg: #060911;
+  color-scheme: dark;
+}
+
+:root[data-theme="light"] {
+  --bg: #ffffff;
+  --bg-alt: #f3faf4;
+  --surface: #ffffff;
+  --surface-2: #eaf7ee;
+  --border: rgba(15,40,25,0.10);
+  --border-strong: rgba(15,40,25,0.20);
+  --text: #10241a;
+  --text-dim: #4c6357;
+  --text-faint: #7f978a;
+  --accent: #16a34a;
+  --accent-2: #059669;
+  --accent-dim: rgba(22,163,74,0.10);
+  --on-accent: #ffffff;
+  --accent-rgb: 22,163,74;
+  --accent-2-rgb: 5,150,105;
+  --bg-rgb: 255,255,255;
+  --grid-line: rgba(16,36,26,0.05);
+  --contact-bg: #eafaf0;
+  color-scheme: light;
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -223,6 +275,7 @@ body {
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   cursor: none;
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
 
 /* â”€â”€ CUSTOM CURSOR â”€â”€ */
@@ -231,28 +284,28 @@ body {
   width: 10px; height: 10px; border-radius: 50%;
   background: var(--accent); transform: translate(-50%,-50%);
   transition: width .15s, height .15s;
-  box-shadow: 0 0 10px rgba(94,234,212,0.6);
+  box-shadow: 0 0 10px rgba(var(--accent-rgb),0.6);
 }
 .cursor-ring {
   position: fixed; pointer-events: none; z-index: 9998;
   width: 36px; height: 36px; border-radius: 50%;
-  border: 1px solid rgba(94,234,212,0.3);
+  border: 1px solid rgba(var(--accent-rgb),0.3);
   transform: translate(-50%,-50%);
   transition: width .3s, height .3s;
 }
 .cursor.hover  { width: 6px; height: 6px; }
-.cursor-ring.hover { width: 54px; height: 54px; border-color: rgba(94,234,212,0.5); }
+.cursor-ring.hover { width: 54px; height: 54px; border-color: rgba(var(--accent-rgb),0.5); }
 
 /* â”€â”€ PROGRESS â”€â”€ */
 .prog { position: fixed; top: 0; left: 0; right: 0; height: 2px; z-index: 600; }
-.prog-fill { height: 100%; background: var(--accent); box-shadow: 0 0 8px rgba(94,234,212,0.7); transition: width 0.08s linear; }
+.prog-fill { height: 100%; background: var(--accent); box-shadow: 0 0 8px rgba(var(--accent-rgb),0.7); transition: width 0.08s linear; }
 
 /* â”€â”€ NAV â”€â”€ */
 .g-nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 500;
   display: flex; align-items: center; justify-content: space-between;
   padding: 0 40px; height: 64px;
-  background: rgba(10,14,22,0.85);
+  background: rgba(var(--bg-rgb),0.85);
   backdrop-filter: blur(24px);
   border-bottom: 1px solid var(--border);
   transition: box-shadow 0.3s;
@@ -285,7 +338,25 @@ body {
   padding: 8px 18px; border-radius: 100px;
   transition: opacity 0.18s, transform 0.15s, box-shadow 0.18s; white-space: nowrap;
 }
-.resume-btn:hover { opacity: 0.88; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(94,234,212,0.3); }
+.resume-btn:hover { opacity: 0.88; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(var(--accent-rgb),0.3); }
+
+/* Theme toggle */
+.theme-toggle {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
+  background: var(--surface); border: 1px solid var(--border); cursor: none;
+  color: var(--text); font-size: 0.95rem; margin-right: 4px;
+  transition: background 0.18s, border-color 0.18s, transform 0.15s;
+}
+.theme-toggle:hover { border-color: var(--accent); background: var(--accent-dim); transform: translateY(-1px); }
+.mob-theme-toggle {
+  display: flex; align-items: center; gap: 10px;
+  background: none; border: none; cursor: none;
+  font-family: 'Inter', sans-serif; font-size: 0.95rem; font-weight: 500;
+  text-align: left; padding: 11px 16px; border-radius: 12px;
+  color: var(--text); transition: background 0.15s; margin-top: 4px;
+}
+.mob-theme-toggle:hover { background: var(--surface); }
 
 /* Hamburger */
 .hbg {
@@ -369,14 +440,14 @@ body {
   align-items: center; justify-content: center;
   padding: 104px 40px 64px; text-align: center;
   position: relative; overflow: hidden; z-index: 1;
-  background: radial-gradient(ellipse 800px 500px at 50% -10%, rgba(94,234,212,0.09), transparent 60%), var(--bg);
+  background: radial-gradient(ellipse 800px 500px at 50% -10%, rgba(var(--accent-rgb),0.09), transparent 60%), var(--bg);
 }
 .hero-section::before {
   content: '';
   position: absolute; inset: 0;
   background-image:
-    linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
   background-size: 56px 56px;
   -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 20%, black 0%, transparent 75%);
   mask-image: radial-gradient(ellipse 70% 60% at 50% 20%, black 0%, transparent 75%);
@@ -390,7 +461,7 @@ body {
   border-radius: 100px; padding: 6px 16px; margin-bottom: 28px;
   animation: fadeSlideDown 0.55s ease both;
 }
-.hero-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 8px rgba(94,234,212,0.8); display: inline-block; animation: blink 1.8s ease infinite; }
+.hero-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 8px rgba(var(--accent-rgb),0.8); display: inline-block; animation: blink 1.8s ease infinite; }
 
 /* Hero name */
 .hero-name {
@@ -430,7 +501,7 @@ body {
   transition: opacity 0.18s, transform 0.15s, box-shadow 0.18s;
   display: inline-flex; align-items: center; gap: 8px;
 }
-.btn-dark:hover { opacity: 0.88; transform: translateY(-2px); box-shadow: 0 10px 28px rgba(94,234,212,0.28); }
+.btn-dark:hover { opacity: 0.88; transform: translateY(-2px); box-shadow: 0 10px 28px rgba(var(--accent-rgb),0.28); }
 .btn-outline {
   background: transparent; color: var(--text);
   border: 1.5px solid var(--border-strong); cursor: none;
@@ -448,7 +519,7 @@ body {
   transition: background 0.18s, transform 0.15s;
   display: inline-flex; align-items: center; gap: 8px;
 }
-.btn-blue:hover { background: rgba(167,139,250,0.1); transform: translateY(-2px); }
+.btn-blue:hover { background: rgba(var(--accent-2-rgb),0.1); transform: translateY(-2px); }
 
 /* Search bar (from old file) */
 .hero-search {
@@ -523,7 +594,7 @@ body {
 .orb:hover .orb-circle {
   background: var(--accent); color: var(--on-accent);
   transform: scale(1.14);
-  box-shadow: 0 12px 40px rgba(94,234,212,0.35);
+  box-shadow: 0 12px 40px rgba(var(--accent-rgb),0.35);
 }
 .orb-label {
   font-size: 0.7rem; font-weight: 500; color: var(--text-dim);
@@ -570,7 +641,7 @@ body {
   border: 1px solid var(--border);
   position: relative; overflow: hidden; transition: all 0.22s; cursor: none;
 }
-.proj-card:hover { background: var(--surface-2); border-color: var(--accent); box-shadow: 0 12px 40px rgba(94,234,212,0.12); }
+.proj-card:hover { background: var(--surface-2); border-color: var(--accent); box-shadow: 0 12px 40px rgba(var(--accent-rgb),0.12); }
 .proj-num { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; color: var(--border-strong); margin-bottom: 24px; transition: color 0.22s; }
 .proj-card:hover .proj-num { color: var(--text-faint); }
 .proj-icon { font-size: 1.2rem; width: 48px; height: 48px; border-radius: 50%; background: var(--bg-alt); display: flex; align-items: center; justify-content: center; margin-bottom: 24px; border: 1px solid var(--border); transition: all 0.22s; color: var(--text); font-family: 'JetBrains Mono', monospace; font-weight: 700; }
@@ -593,7 +664,7 @@ body {
   display: flex; gap: 18px; align-items: flex-start;
   transition: all 0.22s; cursor: none;
 }
-.edu-card:hover { border-color: var(--accent); transform: translateY(-4px); box-shadow: 0 12px 40px rgba(94,234,212,0.15); }
+.edu-card:hover { border-color: var(--accent); transform: translateY(-4px); box-shadow: 0 12px 40px rgba(var(--accent-rgb),0.15); }
 .edu-icon { font-size: 1.6rem; width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; background: var(--bg-alt); border-radius: 14px; flex-shrink: 0; font-family: 'JetBrains Mono', monospace; font-weight: 700; color: var(--text); transition: all 0.22s; }
 .edu-card:hover .edu-icon { background: var(--accent-dim); color: var(--accent); }
 .edu-degree { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 0.97rem; color: var(--text); margin-bottom: 5px; transition: color 0.22s; }
@@ -602,21 +673,21 @@ body {
 
 /* â”€â”€ CONTACT â”€â”€ */
 .contact-section {
-  padding: 140px 40px; background: #060911;
+  padding: 140px 40px; background: var(--contact-bg);
   text-align: center; position: relative; overflow: hidden;
   border-top: 1px solid var(--border);
 }
 .contact-section::before {
   content: '';
   position: absolute; inset: 0;
-  background: radial-gradient(ellipse 700px 400px at 50% 100%, rgba(94,234,212,0.08), transparent 65%);
+  background: radial-gradient(ellipse 700px 400px at 50% 100%, rgba(var(--accent-rgb),0.08), transparent 65%);
   pointer-events: none;
 }
 .contact-bg-text {
   position: absolute; bottom: -60px; left: 50%; transform: translateX(-50%);
   font-family: 'Space Grotesk', sans-serif;
   font-size: clamp(5rem, 14vw, 14rem); font-weight: 700; letter-spacing: -4px;
-  color: rgba(94,234,212,0.04); white-space: nowrap;
+  color: rgba(var(--accent-rgb),0.04); white-space: nowrap;
   pointer-events: none; user-select: none;
 }
 .contact-eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 0.74rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-faint); margin-bottom: 24px; }
@@ -755,7 +826,7 @@ function Progress() {
 /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    NAV â€” Google-coloured logo (from old file), links to all sections
 â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
-function Nav({ active }) {
+function Nav({ active, theme, onToggleTheme }) {
   const [open, setOpen] = useState(false);
   const [raised, setRaised] = useState(false);
   useEffect(() => {
@@ -789,6 +860,16 @@ function Nav({ active }) {
             </li>
           ))}
           <li>
+            <button
+              className="theme-toggle"
+              onClick={onToggleTheme}
+              aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+              title={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+            >
+              {theme === "dark" ? <IconSun /> : <IconMoon />}
+            </button>
+          </li>
+          <li>
             <button className="resume-btn" onClick={() => window.open(RESUME.resumeUrl, "_blank")}>Resume &rarr;</button>
           </li>
         </ul>
@@ -805,6 +886,14 @@ function Nav({ active }) {
               <span style={{ fontSize: "0.78rem", fontWeight: 700, minWidth: 56, textAlign: "left" }}>{icon}</span> {label}
             </button>
           ))}
+          <button
+            className="mob-theme-toggle"
+            onClick={onToggleTheme}
+            aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+          >
+            {theme === "dark" ? <IconSun /> : <IconMoon />}
+            &nbsp;{theme === "dark" ? "Light mode" : "Dark mode"}
+          </button>
           <button className="mob-resume" onClick={() => window.open(RESUME.resumeUrl, "_blank")}><SymbolIcon code={0x1F4C4} label="Resume" /> &nbsp;Resume</button>
         </div>
       )}
@@ -862,7 +951,7 @@ function Hero() {
       {/* Scroll hint */}
       <div className="hero-scroll-hint">
         <span>scroll to explore</span>
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#bbb" strokeWidth="2">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--text-faint)" strokeWidth="2">
           <polyline points="6 9 12 15 18 9"/>
         </svg>
       </div>
@@ -1209,6 +1298,19 @@ function Footer() {
 â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 export default function App() {
   const [active, setActive] = useState("hero");
+  const [theme, setTheme] = useState(() => {
+    if (typeof window === "undefined") return "dark";
+    return localStorage.getItem("theme") === "light" ? "light" : "dark";
+  });
+
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+    localStorage.setItem("theme", theme);
+  }, [theme]);
+
+  const toggleTheme = useCallback(() => {
+    setTheme(t => (t === "dark" ? "light" : "dark"));
+  }, []);
 
   useEffect(() => {
     const observers = SECTIONS.map(({ id }) => {
@@ -1229,7 +1331,7 @@ export default function App() {
       <style dangerouslySetInnerHTML={{ __html: CSS }} />
       <Cursor />
       <Progress />
-      <Nav active={active} />
+      <Nav active={active} theme={theme} onToggleTheme={toggleTheme} />
       <main>
         <Hero />
         <Marquee />
